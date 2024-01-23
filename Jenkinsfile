@@ -32,7 +32,7 @@ pipeline {
                 }
             }
         }
-    }
+
 
         stage('Deploy to OpenShift') {
             steps {
@@ -47,5 +47,5 @@ pipeline {
             }
         }
     }
-
+}
 
