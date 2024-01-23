@@ -37,8 +37,11 @@ pipeline {
                 script {
                     withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'KUBECONFIG_FILE')]) {
                     sh "export KUBECONFIG=\$KUBECONFIG_FILE"
-                    // Apply the deployment file
+                        
+                    // Replace the placeholder with the actual Docker image in the Kubernetes YAML files
                     sh "sed -i \'s|image:.*|image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}|g\' ./deployment.yml"
+                    
+                    // Apply the deployment file
                     sh "oc apply -f deployment.yml -n ${OPENSHIFT_PROJECT}"
                 
                 }
