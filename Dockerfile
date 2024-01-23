@@ -12,7 +12,7 @@ COPY gradlew .
 COPY gradle gradle
 
 # Give execute permissions to the Gradle Wrapper
-RUN chmod +x gradlew
+RUN chmod +x ./gradlew
 
 # Resolve dependencies
 RUN ./gradlew dependencies
