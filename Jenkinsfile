@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY = "docker.io/amrabunemr98"
+        DOCKER_REGISTRY = "amrabunemr98"
         DOCKER_IMAGE = "test"
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
