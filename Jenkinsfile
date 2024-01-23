@@ -37,8 +37,12 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
-                    sh "oc project \${OPENSHIFT_PROJECT}"
+
+                    // Retrieve the path to the kubeconfig secret file
+                    def kubeconfigPath = credentials('OpenShiftConfig')
+
+                    // Run OpenShift commands using the kubeconfig secret file
+                    sh "oc --kubeconfig=${kubeconfigPath} project amr"
                     // Apply the deployment file
                     sh "oc apply -f deployment.yaml"
                 
@@ -48,5 +52,5 @@ pipeline {
     }
 }
 }
-}
+
 
