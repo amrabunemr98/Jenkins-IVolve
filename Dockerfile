@@ -4,9 +4,12 @@ FROM gradle:7.3.3-jdk11 AS build
 # Set the working directory
 WORKDIR /app
 
+# Copy Gradle Wrapper files
+COPY gradlew .
+COPY gradle gradle
+
 # Copy only the build files needed for dependency resolution
 COPY build.gradle settings.gradle ./
-COPY gradlew .
 
 # Download and resolve dependencies using the Gradle Wrapper
 RUN chmod +x gradlew && ./gradlew dependencies
