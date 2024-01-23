@@ -7,7 +7,9 @@ pipeline {
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
         OPENSHIFT_PROJECT = 'amr'
-        OPENSHIFT_SERVER = 'https://console-openshift-console.apps.ocpuat.devopsconsulting.org'
+        // OPENSHIFT_SERVER = 'https://console-openshift-console.apps.ocpuat.devopsconsulting.org'
+        OPENSHIFT_SERVER = 'https://api.ocpuat.devopsconsulting.org:6443'
+
 
 
     }
@@ -37,8 +39,10 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'KUBECONFIG_FILE')]) {
-                    sh "export KUBECONFIG=\$KUBECONFIG_FILE"
+                    withCredentials([string(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
+                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
+                    }                    // sh "export KUBECONFIG=\$KUBECONFIG_FILE"
+                    sh "oc project \${OPENSHIFT_PROJECT}"
                     // Apply the deployment file
                     sh "oc apply -f deployment.yml -n ${OPENSHIFT_PROJECT}"
                 
@@ -47,5 +51,3 @@ pipeline {
         }
     }
 }
-}
-
