@@ -11,11 +11,17 @@ COPY gradle gradle
 # Copy only the build files needed for dependency resolution
 COPY build.gradle settings.gradle ./
 
+# Give execute permissions to the Gradle Wrapper
+RUN chmod +x gradlew
+
 # Download and resolve dependencies using the Gradle Wrapper
-RUN chmod +x gradlew && ./gradlew dependencies
+RUN ./gradlew dependencies
 
 # Copy the rest of the source code
 COPY . .
+
+# Give execute permissions to the Gradle Wrapper
+RUN chmod +x gradlew
 
 # Build the application using the Gradle Wrapper
 RUN ./gradlew build --stacktrace
