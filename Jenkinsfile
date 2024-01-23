@@ -37,7 +37,7 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
+                    withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
                     sh "oc project \${OPENSHIFT_PROJECT}"
                     // Apply the deployment file
                     sh "oc apply -f deployment.yaml"
