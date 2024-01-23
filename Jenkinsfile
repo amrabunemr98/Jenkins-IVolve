@@ -38,11 +38,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
-                    
+                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
+                    }
                     sh "oc project \${OPENSHIFT_PROJECT}"
                     // Apply the deployment file
-                    sh "oc apply -f deployment.yaml"
-                }
+                    sh "oc apply -f deployment.yml"
+                
+                
             }
         }
     }
