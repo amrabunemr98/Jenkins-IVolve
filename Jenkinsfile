@@ -6,6 +6,10 @@ pipeline {
         DOCKER_IMAGE = "test"
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
+        OPENSHIFT_PROJECT = 'amr'
+        OPENSHIFT_SERVER = 'https://console-openshift-console.apps.ocpuat.devopsconsulting.org'
+
+
     }
 
     stages {
@@ -29,4 +33,19 @@ pipeline {
             }
         }
     }
-}
+
+        stage('Deploy to OpenShift') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'Cluster', variable: 'OPENSHIFT_SECRET')]) {
+                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
+                    }
+                    sh "oc project \${OPENSHIFT_PROJECT}"
+                    // Apply the deployment file
+                    sh "oc apply -f deployment.yaml"
+                }
+            }
+        }
+    }
+
+
