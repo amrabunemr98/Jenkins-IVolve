@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = "test"
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
-        OPENSHIFT_PROJECT = 'amr'
+        OPENSHIFT_PROJECT = 'abu-nemr'
         OPENSHIFT_SERVER = 'https://console-openshift-console.apps.ocpuat.devopsconsulting.org'
 
 
