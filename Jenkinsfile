@@ -38,10 +38,10 @@ pipeline {
                     def kubeconfigPath = credentials('OpenShiftConfig')
 
                     // Run OpenShift commands using the kubeconfig secret file
-                    sh "oc --kubeconfig=${kubeconfigPath} project amr"
+                    sh 'oc --kubeconfig=${kubeconfigPath} project amr'
 
                     // Apply the deployment file
-                    sh "oc apply -f deployment.yaml"
+                    sh 'oc apply -f deployment.yml'
                 }
             }
         }
