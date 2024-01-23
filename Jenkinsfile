@@ -37,7 +37,7 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    // Read the content of the OpenShift configuration file from the secret text credential
+                    // Read the content of the OpenShift configuration file from the secret file credential
                     withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_CONFIG_PATH')]) {
                         def openShiftConfigContent = readFile "${OPENSHIFT_CONFIG_PATH}"
                         
