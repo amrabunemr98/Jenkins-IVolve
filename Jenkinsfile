@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = "test"
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
-        OPENSHIFT_PROJECT = 'abu-nemr'
+        OPENSHIFT_PROJECT = 'amr'
         OPENSHIFT_SERVER = 'https://console-openshift-console.apps.ocpuat.devopsconsulting.org'
 
 
@@ -28,7 +28,7 @@ pipeline {
                     sh "docker push docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
                     
                     // Remove the locally built app Docker image
-                    sh "docker rmi docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
+                    sh "docker rmi ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
                 }
             }
         }
@@ -40,6 +40,7 @@ pipeline {
                     withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'KUBECONFIG_FILE')]) {
                     sh "export KUBECONFIG=\$KUBECONFIG_FILE"
                     // Apply the deployment file
+                    sh "sed -i \'s|image:.*|image: ${imageNameapp}|g\' ./deployment.yml"
                     sh "oc apply -f deployment.yml -n ${OPENSHIFT_PROJECT}"
                 
                 }
