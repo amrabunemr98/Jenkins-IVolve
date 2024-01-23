@@ -39,7 +39,7 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
+                    withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
                     sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
                     }                    // sh "export KUBECONFIG=\$KUBECONFIG_FILE"
                     sh "oc project \${OPENSHIFT_PROJECT}"
