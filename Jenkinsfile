@@ -24,7 +24,7 @@ pipeline {
                     sh "docker push docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
                     
                     // Remove the locally built app Docker image
-                    sh "docker rmi ${DOCKER_REGISTRY}:${imageTagApp}"
+                    sh "docker rmi docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
                 }
             }
         }
