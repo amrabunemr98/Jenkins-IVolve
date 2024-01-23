@@ -18,7 +18,7 @@ pipeline {
                     // Build Docker image for app.py
                     sh "docker build -t ${imageNameapp} ."
 
-                    sh "docker tag ${imageNameapp} ${DOCKER_REGISTRY}:${imageTagApp}"
+                    sh "docker tag ${imageNameapp} docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
                     
                     // Push the app Docker image to Docker Hub
                     sh "docker push docker.io/${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}"
