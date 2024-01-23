@@ -37,25 +37,15 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 script {
-                    // Read the content of the OpenShift configuration file from the secret file credential
-                    withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_CONFIG_PATH')]) {
-                        def openShiftConfigContent = readFile "${OPENSHIFT_CONFIG_PATH}"
-                        
-                        // Log the content to verify
-                        echo "OpenShift Config Content:"
-                        echo "${openShiftConfigContent}"
-
-                        // Log in to OpenShift using the configuration
-                        sh "oc login --config <(echo '${openShiftConfigContent}') --insecure-skip-tls-verify"
-
-                        sh "oc project \${OPENSHIFT_PROJECT}"
-
-                        // Apply the deployment file
-                        sh "oc apply -f deployment.yml"
+                    withCredentials([string(credentialsId: 'Cluster', variable: 'OPENSHIFT_SECRET')]) {
+                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
+                    }
+                    sh "oc project \${OPENSHIFT_PROJECT}"
+                    // Apply the deployment file
+                    sh "oc apply -f deployment.yaml"
                 }
             }
         }
     }
-}
 }
 
