@@ -10,6 +10,11 @@ COPY build.gradle settings.gradle ./
 # Download and resolve dependencies using the Gradle Wrapper
 COPY gradlew .
 COPY gradle gradle
+
+# Give execute permissions to the Gradle Wrapper
+RUN chmod +x gradlew
+
+# Resolve dependencies
 RUN ./gradlew dependencies
 
 # Copy the rest of the source code
