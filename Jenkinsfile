@@ -22,6 +22,8 @@ pipeline {
                     
                     // Push the app Docker image to Docker Hub
                     sh "docker push ${DOCKER_REGISTRY}:${imageTagApp}"
+                    // Remove the locally built app Docker image
+                    sh "docker rmi ${DOCKER_REGISTRY}:${imageTagApp}"
                 }
             }
         }
