@@ -37,18 +37,18 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
-                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
-                    }
+
                     // sh "export KUBECONFIG=\$KUBECONFIG_FILE"
                         
                     // Replace the placeholder with the actual Docker image in the Kubernetes YAML files
                     sh "sed -i \'s|image:.*|image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}|g\' ./deployment.yml"
                     
                     // Apply the deployment file
-                    sh "oc apply -f deployment.yml -n ${OPENSHIFT_PROJECT}"
+                    sh "oc apply -f deployment.yml -n ${OPENSHIFT_PROJECT} --kubeconfig=\$OPENSHIFT_SECRET
                 
                 }
             }
         }
     }
+}
 }
