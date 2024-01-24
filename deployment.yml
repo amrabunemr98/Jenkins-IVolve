@@ -33,3 +33,18 @@ spec:
       port: 8080
       targetPort: 8080
   type: ClusterIP
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: test
+  namespace: abu-nemr
+spec:
+  to:
+    kind: Service
+    name: svc-app
+  port:
+    targetPort: 8080
+  wildcardPolicy: None
+
