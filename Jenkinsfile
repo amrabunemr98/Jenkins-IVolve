@@ -7,8 +7,6 @@ pipeline {
         imageTagApp = "build-${BUILD_NUMBER}-app"
         imageNameapp = "${DOCKER_REGISTRY}:${imageTagApp}"
         OPENSHIFT_PROJECT = 'abu-nemr'
-        OPENSHIFT_SERVER = 'https://api.ocpuat.devopsconsulting.org:6443'
-
     }
 
     stages {
@@ -37,9 +35,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'OpenShiftConfig', variable: 'OPENSHIFT_SECRET')]) {
-                    
-                    // sh "export KUBECONFIG=\$KUBECONFIG_FILE"
-                        
+                                            
                     // Replace the placeholder with the actual Docker image in the Kubernetes YAML files
                     sh "sed -i \'s|image:.*|image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${imageTagApp}|g\' ./deployment.yml"
                     
